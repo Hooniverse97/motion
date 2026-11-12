@@ -1,0 +1,554 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>선교관뉴스 모션 v2</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  /* v2 — 5-role collaboration
+     [BLACK] architecture: 16:9 stage, bottom control dock, chapter rail, keyboard controls
+     [RED]   motion: spring stagger, elastic word drop, pulse on scene enter, hover micro-feedback
+     [BLUE]  type: 1.333 scale, tabular ms counter, display×serif×mono triad
+     [SILVER] material: brushed-dark base, soft inner glow, subtle grain, metallic rim on cards
+     [GOLD]  UX: chapter dots unlock, 100-ch milestone ring, replay reward */
+  :root{
+    /* [SILVER] palette: brushed obsidian + warm ivory + oxidized copper */
+    --bg:#0e1118;
+    --bg2:#161a24;
+    --panel:#1d2230;
+    --ivory:#f5ecd9;
+    --paper:#faf3e2;
+    --mute:#8b93a7;
+    --ink:#0a0d14;
+    --accent:#e04a2b;   /* [RED] signature */
+    --accent-2:#f2a93b; /* [GOLD] */
+    --accent-3:#3e8fd1; /* [BLUE] */
+    --silver:linear-gradient(135deg,#d7dbe4 0%,#9aa1b2 48%,#eef0f5 52%,#8b92a4 100%);
+    color-scheme: dark;
+  }
+  html,body{height:100%}
+  body{
+    margin:0;background:
+      radial-gradient(1200px 600px at 20% -10%, #202638 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 110%, #1a1f2b 0%, transparent 55%),
+      var(--bg);
+    color:var(--ivory);
+    font-family:'Noto Sans KR',system-ui,sans-serif;
+    overflow:hidden;
+    padding-left:max(16px,env(safe-area-inset-left,0px));
+    padding-right:max(16px,env(safe-area-inset-right,0px));
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* [BLACK] stage shell */
+  .stage{
+    position:relative;width:min(100vw,1040px);aspect-ratio:16/9;
+    background:linear-gradient(180deg,#141825 0%,#0d1018 100%);
+    overflow:hidden;border-radius:18px;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,.55),
+      0 2px 0 rgba(255,255,255,.04) inset,
+      0 -40px 80px rgba(224,74,43,.06) inset,
+      0 0 0 1px rgba(255,255,255,.06);
+  }
+  /* [SILVER] grain + vignette */
+  .stage::before{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:45;
+    background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.4px);
+    background-size:4px 4px;mix-blend-mode:screen;opacity:.35;
+  }
+  .stage::after{
+    content:"";position:absolute;inset:0;pointer-events:none;z-index:46;
+    background:radial-gradient(120% 90% at 50% 40%,transparent 55%,rgba(0,0,0,.55) 100%);
+  }
+
+  .scene{position:absolute;inset:0;opacity:0;pointer-events:none;transform:translateY(8px) scale(.995);transition:opacity .45s ease, transform .55s cubic-bezier(.2,.9,.3,1)}
+  .scene.on{opacity:1;transform:none}
+  .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4% 6% 10%}
+
+  /* [BLUE] typography system */
+  h1,h2,h3{margin:0;font-family:'Black Han Sans','Noto Sans KR',sans-serif;font-weight:900;letter-spacing:-.02em;line-height:1.02;text-wrap:balance}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+  .kick{font-family:'JetBrains Mono',monospace;color:var(--mute);font-weight:500;letter-spacing:.32em;font-size:clamp(10px,1.1vw,13px);text-transform:uppercase}
+  .big{font-size:clamp(64px,12vw,172px)}
+  .mid{font-size:clamp(30px,5.6vw,72px)}
+  .sm{font-size:clamp(20px,3.2vw,40px)}
+  .quote{font-family:'Gowun Batang',serif;font-size:clamp(16px,2.4vw,28px);max-width:80%;text-align:center;font-weight:400;color:var(--paper);opacity:.92}
+  .tag{display:inline-flex;align-items:center;gap:.5em;background:rgba(255,255,255,.06);color:var(--ivory);padding:.45em 1em;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:clamp(10px,1.2vw,13px);letter-spacing:.2em;font-weight:700;border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(8px)}
+  .tag .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+
+  /* [RED] kinetic word drops with spring stagger */
+  .word{display:inline-block;opacity:0;transform:translateY(60px) rotate(-4deg) skewX(-2deg);transition:opacity .35s ease, transform .6s cubic-bezier(.2,1.4,.3,1)}
+  .scene.on .word{opacity:1;transform:none}
+  .scene.on .word.d1{transition-delay:.05s}
+  .scene.on .word.d2{transition-delay:.22s}
+  .scene.on .word.d3{transition-delay:.38s}
+  .scene.on .word.d4{transition-delay:.54s}
+  .scene.on .word.d5{transition-delay:.70s}
+  .scene.on .word.d6{transition-delay:.86s}
+
+  /* ============ SCENE 1 — HOOK ============ */
+  .s1{background:
+    radial-gradient(900px 500px at 30% 20%, rgba(224,74,43,.12), transparent 60%),
+    radial-gradient(700px 400px at 80% 90%, rgba(62,143,209,.08), transparent 60%),
+    linear-gradient(180deg,#121624 0%,#0a0d14 100%)}
+  .s1 .kick{margin-bottom:28px;color:var(--accent-2)}
+  .s1 .big{color:var(--ivory);line-height:.92;text-align:center}
+  .s1 .hundred{
+    font-style:normal;color:#fff;display:inline-block;position:relative;padding:0 .12em;
+    text-shadow:0 2px 0 rgba(0,0,0,.3);
+  }
+  .s1 .hundred::before{
+    content:"";position:absolute;inset:.1em -.04em .1em -.04em;z-index:-1;
+    background:linear-gradient(135deg,#e04a2b 0%,#f2a93b 100%);
+    border-radius:8px;transform:rotate(-2deg);
+    box-shadow:0 10px 30px rgba(224,74,43,.45), inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .s1 .q{color:var(--accent-2);font-size:.95em;margin-left:.08em;display:inline-block;transform-origin:bottom}
+  .scene.on .s1 .q, .s1 .q.on{animation:qbounce 1.4s .9s cubic-bezier(.2,1.6,.3,1) both}
+  @keyframes qbounce{0%{transform:scale(0) rotate(-20deg);opacity:0}60%{transform:scale(1.2) rotate(8deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+  .s1 .sub{color:var(--mute);font-family:'Gowun Batang',serif;font-size:clamp(14px,2vw,22px);margin-top:22px;letter-spacing:.02em}
+  .s1 .tag{margin-top:32px}
+
+  /* [GOLD] floating 100 ring */
+  .ring{position:absolute;width:140px;height:140px;border-radius:50%;border:2px solid rgba(242,169,59,.35);right:7%;top:12%;display:grid;place-items:center;animation:spin 18s linear infinite}
+  .ring::before{content:"";position:absolute;inset:-8px;border-radius:50%;border:1px dashed rgba(242,169,59,.25)}
+  .ring span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent-2);letter-spacing:.3em}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ============ SCENE 2 — WHY ============ */
+  .s2{background:linear-gradient(180deg,#131827 0%,#0b0e17 100%)}
+  .s2 .layerA, .s2 .layerB{position:absolute;inset:0;pointer-events:none}
+  .s2 .shape{position:absolute;border-radius:12px;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 40px rgba(0,0,0,.4)}
+  .s2 .shape.house{width:130px;aspect-ratio:1/1;left:8%;top:22%;background:linear-gradient(135deg,#1f2535,#161b28);clip-path:polygon(0 38%,50% 0,100% 38%,100% 100%,0 100%)}
+  .s2 .shape.door{width:80px;height:140px;right:12%;top:26%;background:linear-gradient(180deg,#e04a2b,#a8341c);border-radius:40px 40px 4px 4px}
+  .s2 .shape.circle{width:90px;height:90px;border-radius:50%;left:28%;bottom:16%;background:radial-gradient(circle at 30% 30%,#f2a93b,#b56f1e)}
+  .s2 .shape.pill{width:150px;height:48px;right:28%;bottom:18%;border-radius:999px;background:linear-gradient(135deg,#3e8fd1,#245980)}
+  .s2 .kick{color:var(--accent);margin-bottom:12px}
+  .s2 .mid{color:var(--ivory);text-align:center}
+  .s2 .mid em{font-style:normal;color:var(--accent-2);position:relative}
+  .s2 .mid em::after{content:"";position:absolute;left:0;right:0;bottom:.05em;height:.08em;background:var(--accent-2);border-radius:2px}
+
+  /* ============ SCENE 3 — 100 ============ */
+  .s3{background:radial-gradient(1000px 600px at 50% 50%, #1a2033, #0a0d14)}
+  .s3 .tag{margin-bottom:18px}
+  .s3 .numwrap{position:relative;display:flex;align-items:baseline;gap:.08em}
+  .s3 .num{font-family:'Black Han Sans',sans-serif;font-size:clamp(140px,26vw,340px);line-height:.82;color:#fff;letter-spacing:-.04em;
+    background:linear-gradient(180deg,#fff 0%,#f2a93b 50%,#c77a1e 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+    text-shadow:0 20px 60px rgba(242,169,59,.35)}
+  .s3 .suffix{font-size:clamp(36px,6vw,80px);color:var(--ivory);font-family:'Black Han Sans'}
+  .s3 .kick{margin-top:18px;color:var(--mute)}
+  /* milestone ticks */
+  .ticks{position:absolute;left:8%;right:8%;bottom:14%;display:flex;gap:4px;height:6px;align-items:center}
+  .ticks i{flex:1;height:100%;background:rgba(255,255,255,.06);border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.3,1,.3,1),background .3s}
+  .ticks i.on{transform:scaleX(1);background:linear-gradient(90deg,#e04a2b,#f2a93b)}
+
+  /* ============ SCENES 4–7 — CASES ============ */
+  .case{background:linear-gradient(180deg,#141825 0%,#0b0e17 100%)}
+  .case .card{
+    width:min(78%,760px);padding:clamp(24px,3.5vw,44px);border-radius:16px;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 30px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+    position:relative;overflow:hidden;
+  }
+  .case .card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(255,255,255,.06) 100%);pointer-events:none}
+  .case .rail{position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+  .s5 .rail{background:var(--accent-3)}
+  .s6 .rail{background:#2d8f6b}
+  .s7 .rail{background:var(--accent-2)}
+  .case .tag{margin-bottom:16px}
+  .s5 .tag .dot{background:var(--accent-3);box-shadow:0 0 10px var(--accent-3)}
+  .s6 .tag .dot{background:#2d8f6b;box-shadow:0 0 10px #2d8f6b}
+  .s7 .tag .dot{background:var(--accent-2);box-shadow:0 0 10px var(--accent-2)}
+  .case h3{color:var(--ivory);margin-bottom:14px}
+  .case .meta{font-family:'JetBrains Mono',monospace;color:var(--mute);font-size:12px;letter-spacing:.2em;margin-bottom:8px}
+
+  /* ============ SCENE 8 — CTA ============ */
+  .s8{background:
+    radial-gradient(900px 500px at 50% 20%, rgba(242,169,59,.15), transparent 60%),
+    linear-gradient(180deg,#141825 0%,#0a0d14 100%)}
+  .s8 .mid{color:var(--ivory);text-align:center}
+  .s8 .mid em{font-style:normal;background:linear-gradient(135deg,#f2a93b,#e04a2b);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .s8 .cta{
+    margin-top:28px;display:inline-flex;align-items:center;gap:12px;
+    font-family:'Black Han Sans';color:#fff;
+    background:linear-gradient(135deg,#e04a2b,#a8341c);
+    padding:14px 34px;border-radius:999px;font-size:clamp(16px,2.6vw,24px);
+    box-shadow:0 20px 40px rgba(224,74,43,.45), inset 0 1px 0 rgba(255,255,255,.3);
+    border:1px solid rgba(255,255,255,.15)
+  }
+  .s8 .cta .arrow{display:inline-block;transition:transform .3s}
+  .scene.on .s8 .cta .arrow{animation:arrow 1.6s 1s infinite}
+  @keyframes arrow{0%,100%{transform:translateX(0)}50%{transform:translateX(6px)}}
+
+  /* ============ [BLACK] CONTROL DOCK ============ */
+  .dock{
+    position:absolute;left:14px;right:14px;bottom:10px;z-index:60;
+    display:flex;align-items:center;gap:12px;
+    padding:8px 12px;border-radius:14px;
+    background:linear-gradient(180deg,rgba(20,24,36,.7),rgba(10,13,20,.7));
+    backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.08);
+    box-shadow:0 10px 30px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.06);
+    opacity:0;transform:translateY(10px);transition:opacity .3s, transform .3s;
+  }
+  .dock.show{opacity:1;transform:none}
+  .dock button{
+    appearance:none;border:1px solid rgba(255,255,255,.12);
+    background:linear-gradient(180deg,#242a3b,#171b26);color:var(--ivory);
+    width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:14px;
+    display:grid;place-items:center;transition:transform .1s ease, background .2s;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 2px 6px rgba(0,0,0,.4)
+  }
+  .dock button:hover{background:linear-gradient(180deg,#2e3448,#1d2230)}
+  .dock button:active{transform:translateY(1px) scale(.97)}
+  .dock .time{font-family:'JetBrains Mono',monospace;color:var(--mute);font-size:12px;letter-spacing:.1em;min-width:88px;text-align:center}
+  .dock .time b{color:var(--ivory);font-weight:700}
+  .bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.06);position:relative;overflow:hidden;cursor:pointer}
+  .bar .fill{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:3px;box-shadow:0 0 10px rgba(224,74,43,.5)}
+  /* [GOLD] chapter dots on bar */
+  .chaps{position:absolute;inset:0;display:flex}
+  .chaps i{flex:1;position:relative}
+  .chaps i::after{content:"";position:absolute;right:-1px;top:50%;transform:translate(0,-50%);width:3px;height:14px;background:rgba(255,255,255,.14);border-radius:2px}
+  .chaps i:last-child::after{display:none}
+  .chaps i.hit::after{background:var(--accent-2);box-shadow:0 0 10px var(--accent-2)}
+
+  /* [GOLD] chapter rail (top) */
+  .rail-top{position:absolute;left:14px;top:12px;z-index:55;display:flex;gap:6px}
+  .rail-top i{width:28px;height:4px;border-radius:2px;background:rgba(255,255,255,.1);transition:background .3s, transform .3s}
+  .rail-top i.hit{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+  .rail-top i.cur{transform:scaleY(1.6)}
+
+  .brand{position:absolute;right:14px;top:12px;z-index:55;font-family:'JetBrains Mono',monospace;color:var(--mute);font-size:11px;letter-spacing:.3em}
+
+  /* [BLACK] start overlay — modern device feel */
+  #start{position:absolute;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    background:
+      radial-gradient(600px 400px at 50% 40%, rgba(224,74,43,.18), transparent 60%),
+      linear-gradient(180deg,#121624 0%,#0a0d14 100%)}
+  #start .kick{color:var(--accent-2)}
+  #start h2{font-family:'Black Han Sans';font-size:clamp(28px,5vw,56px);color:var(--ivory);margin:0;text-align:center}
+  #start button{
+    font-family:'Black Han Sans',sans-serif;font-size:clamp(18px,2.6vw,26px);
+    padding:16px 40px;color:#fff;
+    background:linear-gradient(135deg,#e04a2b,#a8341c);
+    border:1px solid rgba(255,255,255,.2);border-radius:999px;cursor:pointer;
+    box-shadow:0 20px 40px rgba(224,74,43,.45), inset 0 1px 0 rgba(255,255,255,.3);
+    display:inline-flex;align-items:center;gap:12px;transition:transform .15s ease, box-shadow .2s
+  }
+  #start button:hover{transform:translateY(-2px);box-shadow:0 26px 50px rgba(224,74,43,.55), inset 0 1px 0 rgba(255,255,255,.3)}
+  #start button:active{transform:translateY(0) scale(.98)}
+  #start .meta{color:var(--mute);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.3em}
+
+  /* [GOLD] completion overlay */
+  #done{position:absolute;inset:0;z-index:95;display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    background:radial-gradient(600px 400px at 50% 50%, rgba(0,0,0,.6), rgba(0,0,0,.85))}
+  #done.show{display:flex;animation:fadein .5s}
+  @keyframes fadein{from{opacity:0}to{opacity:1}}
+  #done .medal{width:92px;height:92px;border-radius:50%;background:conic-gradient(from 180deg, #f2a93b, #e04a2b, #f2a93b);display:grid;place-items:center;color:#fff;font-family:'Black Han Sans';font-size:30px;box-shadow:0 20px 60px rgba(242,169,59,.5)}
+  #done .msg{color:var(--ivory);font-family:'Black Han Sans';font-size:clamp(20px,3vw,28px)}
+  #done .btn{margin-top:4px;padding:10px 22px;border-radius:999px;background:transparent;border:1px solid rgba(255,255,255,.2);color:var(--ivory);cursor:pointer;font-family:'JetBrains Mono';letter-spacing:.2em;font-size:12px}
+  #done .btn:hover{background:rgba(255,255,255,.08)}
+</style>
+
+<div class="stage" id="stage">
+  <!-- [GOLD] chapter rail -->
+  <div class="rail-top" id="rail"></div>
+  <div class="brand">AM · VOL.02</div>
+
+  <!-- SCENE 1 -->
+  <section class="scene s1" data-start="0" data-end="4">
+    <div class="ring"><span>100 DOORS</span></div>
+    <div class="center">
+      <div class="kick word d1">E-LAND ASIAN MISSION · NEWS VOL.02</div>
+      <h1 class="big">
+        <span class="hundred word d2">100명</span><span class="word d3">이</span><br>
+        <span class="word d4">두드렸을까</span><span class="q word d5">?</span>
+      </h1>
+      <div class="sub word d5">왜 선교사들은 이 문 앞에 모였을까</div>
+      <div class="tag word d6"><span class="dot"></span>30초 안에 확인</div>
+    </div>
+  </section>
+
+  <!-- SCENE 2 -->
+  <section class="scene s2" data-start="4" data-end="8">
+    <div class="layerA">
+      <div class="shape house"></div>
+      <div class="shape door"></div>
+      <div class="shape circle"></div>
+      <div class="shape pill"></div>
+    </div>
+    <div class="center">
+      <div class="kick word d1">WHY WE STARTED · 02</div>
+      <h2 class="mid">
+        <span class="word d2">소유가 아닌,</span><br>
+        <em class="word d4">공유</em><span class="word d5">의 플랫폼</span>
+      </h2>
+    </div>
+  </section>
+
+  <!-- SCENE 3 -->
+  <section class="scene s3" data-start="8" data-end="12">
+    <div class="center">
+      <div class="tag word d1"><span class="dot"></span>CURRENT NETWORK</div>
+      <div class="numwrap">
+        <span class="num mono" id="ct">0</span>
+        <span class="suffix word d3">채</span>
+      </div>
+      <div class="kick word d4">교회·단체가 연결된 선교관 네트워크</div>
+    </div>
+    <div class="ticks" id="ticks"></div>
+  </section>
+
+  <!-- SCENE 4 -->
+  <section class="scene s4 case" data-start="12" data-end="15.5">
+    <div class="center">
+      <div class="card">
+        <div class="rail"></div>
+        <div class="meta word d1">CASE · 01 / CHURCH</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">은실교회</h3>
+        <p class="quote word d3">"작은 공간이지만, 선교사의 쉼이 되었습니다."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 5 -->
+  <section class="scene s5 case" data-start="15.5" data-end="19">
+    <div class="center">
+      <div class="card">
+        <div class="rail"></div>
+        <div class="meta word d1">CASE · 02 / ORGANIZATION</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">ANN · 김은아 총무</h3>
+        <p class="quote word d3">"혼자 할 수 없던 일이, 네트워크로 가능해졌습니다."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 6 -->
+  <section class="scene s6 case" data-start="19" data-end="22.5">
+    <div class="center">
+      <div class="card">
+        <div class="rail"></div>
+        <div class="meta word d1">CASE · 03 / INDIVIDUAL</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">독일 · 전예물 선교사</h3>
+        <p class="quote word d3">"국경 너머까지, 플랫폼은 이어졌습니다."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 7 -->
+  <section class="scene s7 case" data-start="22.5" data-end="26">
+    <div class="center">
+      <div class="card">
+        <div class="rail"></div>
+        <div class="meta word d1">CASE · 04 / CHURCH</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">인천가좌쉼터 · 조명숙 사모</h3>
+        <p class="quote word d3">"기도로 열린 문, 함께 지켜주세요."</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 8 -->
+  <section class="scene s8" data-start="26" data-end="30">
+    <div class="center">
+      <div class="tag word d1"><span class="dot"></span>THE NETWORK CONTINUES</div>
+      <h2 class="mid">
+        <span class="word d2">다음 한 채의 문,</span><br>
+        <em class="word d4">당신이 열어주세요.</em>
+      </h2>
+      <div class="cta word d6">함께 동참하기 <span class="arrow">→</span></div>
+    </div>
+  </section>
+
+  <!-- [BLACK] control dock -->
+  <div class="dock" id="dock">
+    <button id="pp" title="재생/일시정지">❚❚</button>
+    <button id="rp" title="처음부터">↺</button>
+    <div class="bar" id="bar"><div class="fill" id="fill"></div><div class="chaps" id="chaps"></div></div>
+    <div class="time mono"><b id="cur">00.0</b> / 30.0s</div>
+    <button id="mt" title="음소거">🔊</button>
+  </div>
+
+  <!-- start -->
+  <div id="start">
+    <div class="kick">E-LAND ASIAN MISSION · NEWS VOL.02</div>
+    <h2>100명이 두드렸을까?</h2>
+    <button id="go">▶ 30초 뉴스 시작</button>
+    <div class="meta">SOUND · VOICE · 30s</div>
+  </div>
+
+  <!-- [GOLD] completion -->
+  <div id="done">
+    <div class="medal">100</div>
+    <div class="msg">다음 문은, 당신의 차례입니다.</div>
+    <button class="btn" id="again">다시 보기</button>
+  </div>
+</div>
+
+<script>
+const scenes=[...document.querySelectorAll('.scene')];
+const DURATION=30;
+const fill=document.getElementById('fill');
+const curEl=document.getElementById('cur');
+const dock=document.getElementById('dock');
+const rail=document.getElementById('rail');
+const chaps=document.getElementById('chaps');
+const doneEl=document.getElementById('done');
+
+// build chapter rails
+scenes.forEach((sc,i)=>{
+  const r=document.createElement('i');rail.appendChild(r);
+  const c=document.createElement('i');chaps.appendChild(c);
+});
+const railDots=[...rail.children];
+
+// ticks for scene 3
+const ticksEl=document.getElementById('ticks');
+for(let i=0;i<20;i++) ticksEl.appendChild(document.createElement('i'));
+const ticks=[...ticksEl.children];
+
+let t0=0,pausedAt=0,paused=false,raf=0,audioCtx=null,bgmStop=null,muted=false,saidIdx=-1,counted=false;
+let masterGain=null;
+
+function startBGM(){
+  const AC=window.AudioContext||window.webkitAudioContext;
+  audioCtx=new AC();
+  masterGain=audioCtx.createGain();masterGain.gain.value=0;masterGain.connect(audioCtx.destination);
+  masterGain.gain.linearRampToValueAtTime(muted?0:0.2,audioCtx.currentTime+1.2);
+  const freqs=[220.00,277.18,329.63,415.30];
+  freqs.forEach((f,i)=>{
+    const o=audioCtx.createOscillator();o.type=i===0?'sine':'triangle';o.frequency.value=f;
+    const g=audioCtx.createGain();g.gain.value=0.18/(i+1);
+    const lfo=audioCtx.createOscillator();lfo.frequency.value=0.1+i*0.07;
+    const lfoG=audioCtx.createGain();lfoG.gain.value=0.04;
+    lfo.connect(lfoG);lfoG.connect(g.gain);
+    o.connect(g);g.connect(masterGain);o.start();lfo.start();
+  });
+  const pulse=setInterval(()=>{
+    if(!audioCtx) return;
+    const now=audioCtx.currentTime;
+    const o=audioCtx.createOscillator();o.frequency.value=110;o.type='sine';
+    const g=audioCtx.createGain();g.gain.setValueAtTime(0,now);
+    g.gain.linearRampToValueAtTime(0.08,now+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,now+0.5);
+    o.connect(g);g.connect(masterGain);o.start(now);o.stop(now+0.6);
+  },2000);
+  bgmStop=()=>{clearInterval(pulse);if(!audioCtx) return;masterGain.gain.linearRampToValueAtTime(0,audioCtx.currentTime+0.8);setTimeout(()=>{try{audioCtx.close()}catch(e){}audioCtx=null},900)};
+}
+
+const lines=[
+  {t:0.4,text:'100명이 두드렸을까.'},
+  {t:4.3,text:'소유가 아닌, 공유의 플랫폼입니다.'},
+  {t:8.3,text:'지금까지 100채. 선교관 네트워크가 연결되었습니다.'},
+  {t:12.3,text:'은실교회, 작은 공간이 선교사의 쉼이 되었습니다.'},
+  {t:15.8,text:'ANN 김은아 총무, 네트워크로 가능해졌습니다.'},
+  {t:19.3,text:'독일 전예물 선교사, 국경 너머까지 이어집니다.'},
+  {t:22.8,text:'인천가좌쉼터, 기도로 열린 문입니다.'},
+  {t:26.3,text:'다음 한 채의 문, 당신이 열어주세요.'}
+];
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window) || muted) return;
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='ko-KR';u.rate=1.05;u.pitch=1.0;u.volume=1.0;
+    const vs=speechSynthesis.getVoices();
+    const ko=vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith('ko'));
+    if(ko) u.voice=ko;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+function counter(target,ms,el){
+  let start=performance.now();
+  function step(now){
+    const p=Math.min(1,(now-start)/ms);
+    const eased=1-Math.pow(1-p,3);
+    el.textContent=Math.floor(eased*target).toString();
+    // light up ticks
+    const tn=Math.floor(eased*ticks.length);
+    for(let i=0;i<ticks.length;i++) ticks[i].classList.toggle('on',i<tn);
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function tick(ts){
+  const t=(ts-t0)/1000;
+  const pct=Math.min(t,DURATION)/DURATION*100;
+  fill.style.width=pct+'%';
+  curEl.textContent=Math.min(t,DURATION).toFixed(1).padStart(4,'0');
+  let active=-1;
+  scenes.forEach((sc,i)=>{
+    const s=+sc.dataset.start,e=+sc.dataset.end;
+    const on=t>=s && t<e;
+    if(on){ active=i; sc.classList.add('on'); } else sc.classList.remove('on');
+    railDots[i].classList.toggle('hit',t>=s);
+    railDots[i].classList.toggle('cur',on);
+    chaps.children[i].classList.toggle('hit',t>=e);
+  });
+  for(let i=saidIdx+1;i<lines.length;i++){
+    if(t>=lines[i].t){ speak(lines[i].text); saidIdx=i; } else break;
+  }
+  if(active===2 && !counted){ counted=true; counter(100,1800,document.getElementById('ct')); }
+  if(t<DURATION && !paused) raf=requestAnimationFrame(tick);
+  else if(t>=DURATION){
+    fill.style.width='100%';
+    if(bgmStop) bgmStop();
+    doneEl.classList.add('show');
+  }
+}
+
+function play(){
+  paused=false;
+  t0=performance.now()-pausedAt*1000;
+  raf=requestAnimationFrame(tick);
+  document.getElementById('pp').textContent='❚❚';
+}
+function pause(){
+  paused=true;
+  pausedAt=(performance.now()-t0)/1000;
+  cancelAnimationFrame(raf);
+  document.getElementById('pp').textContent='▶';
+}
+
+document.getElementById('pp').onclick=()=>paused?play():pause();
+document.getElementById('rp').onclick=()=>{
+  cancelAnimationFrame(raf);pausedAt=0;saidIdx=-1;counted=false;
+  ticks.forEach(t=>t.classList.remove('on'));
+  document.getElementById('ct').textContent='0';
+  doneEl.classList.remove('show');
+  try{speechSynthesis.cancel()}catch(e){}
+  play();
+};
+document.getElementById('mt').onclick=(e)=>{
+  muted=!muted;
+  e.currentTarget.textContent=muted?'🔇':'🔊';
+  if(masterGain) masterGain.gain.linearRampToValueAtTime(muted?0:0.2,audioCtx.currentTime+0.2);
+  if(muted) try{speechSynthesis.cancel()}catch(e){}
+};
+document.getElementById('bar').onclick=(e)=>{
+  const r=e.currentTarget.getBoundingClientRect();
+  const p=(e.clientX-r.left)/r.width;
+  pausedAt=p*DURATION;saidIdx=-1;counted=false;
+  ticks.forEach(t=>t.classList.remove('on'));
+  if(!paused){t0=performance.now()-pausedAt*1000;}
+};
+document.addEventListener('keydown',(e)=>{
+  if(e.key===' '){e.preventDefault();paused?play():pause();}
+  if(e.key==='r'||e.key==='R') document.getElementById('rp').click();
+  if(e.key==='m'||e.key==='M') document.getElementById('mt').click();
+});
+document.getElementById('again').onclick=()=>document.getElementById('rp').click();
+
+document.getElementById('go').onclick=()=>{
+  document.getElementById('start').style.display='none';
+  dock.classList.add('show');
+  try{speechSynthesis.getVoices();}catch(e){}
+  startBGM();
+  t0=performance.now();
+  raf=requestAnimationFrame(tick);
+};
+</script>
+</body></html>
