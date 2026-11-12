@@ -1,12 +1,20 @@
-﻿<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>?좉탳愿?댁뒪 紐⑥뀡 v2</title>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+<title>선교관뉴스 모션 v2</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-  /* v2 ??5-role collaboration
+  /* v2 — 5-role collaboration
      [BLACK] architecture: 16:9 stage, bottom control dock, chapter rail, keyboard controls
      [RED]   motion: spring stagger, elastic word drop, pulse on scene enter, hover micro-feedback
-     [BLUE]  type: 1.333 scale, tabular ms counter, display횞serif횞mono triad
+     [BLUE]  type: 1.333 scale, tabular ms counter, display×serif×mono triad
      [SILVER] material: brushed-dark base, soft inner glow, subtle grain, metallic rim on cards
      [GOLD]  UX: chapter dots unlock, 100-ch milestone ring, replay reward */
   :root{
@@ -85,7 +93,7 @@
   .scene.on .word.d5{transition-delay:.70s}
   .scene.on .word.d6{transition-delay:.86s}
 
-  /* ============ SCENE 1 ??HOOK ============ */
+  /* ============ SCENE 1 — HOOK ============ */
   .s1{background:
     radial-gradient(900px 500px at 30% 20%, rgba(224,74,43,.12), transparent 60%),
     radial-gradient(700px 400px at 80% 90%, rgba(62,143,209,.08), transparent 60%),
@@ -114,7 +122,7 @@
   .ring span{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent-2);letter-spacing:.3em}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  /* ============ SCENE 2 ??WHY ============ */
+  /* ============ SCENE 2 — WHY ============ */
   .s2{background:linear-gradient(180deg,#131827 0%,#0b0e17 100%)}
   .s2 .layerA, .s2 .layerB{position:absolute;inset:0;pointer-events:none}
   .s2 .shape{position:absolute;border-radius:12px;border:1px solid rgba(255,255,255,.1);box-shadow:0 20px 40px rgba(0,0,0,.4)}
@@ -127,7 +135,7 @@
   .s2 .mid em{font-style:normal;color:var(--accent-2);position:relative}
   .s2 .mid em::after{content:"";position:absolute;left:0;right:0;bottom:.05em;height:.08em;background:var(--accent-2);border-radius:2px}
 
-  /* ============ SCENE 3 ??100 ============ */
+  /* ============ SCENE 3 — 100 ============ */
   .s3{background:radial-gradient(1000px 600px at 50% 50%, #1a2033, #0a0d14)}
   .s3 .tag{margin-bottom:18px}
   .s3 .numwrap{position:relative;display:flex;align-items:baseline;gap:.08em}
@@ -141,7 +149,7 @@
   .ticks i{flex:1;height:100%;background:rgba(255,255,255,.06);border-radius:2px;transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.3,1,.3,1),background .3s}
   .ticks i.on{transform:scaleX(1);background:linear-gradient(90deg,#e04a2b,#f2a93b)}
 
-  /* ============ SCENES 4?? ??CASES ============ */
+  /* ============ SCENES 4–7 — CASES ============ */
   .case{background:linear-gradient(180deg,#141825 0%,#0b0e17 100%)}
   .case .card{
     width:min(78%,760px);padding:clamp(24px,3.5vw,44px);border-radius:16px;
@@ -162,7 +170,7 @@
   .case h3{color:var(--ivory);margin-bottom:14px}
   .case .meta{font-family:'JetBrains Mono',monospace;color:var(--mute);font-size:12px;letter-spacing:.2em;margin-bottom:8px}
 
-  /* ============ SCENE 8 ??CTA ============ */
+  /* ============ SCENE 8 — CTA ============ */
   .s8{background:
     radial-gradient(900px 500px at 50% 20%, rgba(242,169,59,.15), transparent 60%),
     linear-gradient(180deg,#141825 0%,#0a0d14 100%)}
@@ -219,7 +227,7 @@
 
   .brand{position:absolute;right:14px;top:12px;z-index:55;font-family:'JetBrains Mono',monospace;color:var(--mute);font-size:11px;letter-spacing:.3em}
 
-  /* [BLACK] start overlay ??modern device feel */
+  /* [BLACK] start overlay — modern device feel */
   #start{position:absolute;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
     background:
       radial-gradient(600px 400px at 50% 40%, rgba(224,74,43,.18), transparent 60%),
@@ -252,19 +260,19 @@
 <div class="stage" id="stage">
   <!-- [GOLD] chapter rail -->
   <div class="rail-top" id="rail"></div>
-  <div class="brand">AM 쨌 VOL.02</div>
+  <div class="brand">AM · VOL.02</div>
 
   <!-- SCENE 1 -->
   <section class="scene s1" data-start="0" data-end="4">
     <div class="ring"><span>100 DOORS</span></div>
     <div class="center">
-      <div class="kick word d1">E-LAND ASIAN MISSION 쨌 NEWS VOL.02</div>
+      <div class="kick word d1">E-LAND ASIAN MISSION · NEWS VOL.02</div>
       <h1 class="big">
-        <span class="word d2">?좉탳愿</span> <span class="hundred word d3">100梨?/span><span class="word d3">,</span><br>
-        <span class="word d4">?꾩쭅??/span> <span class="word d5">紐⑥옄?띾땲??/span><span class="q word d5">.</span>
+        <span class="word d2">선교관</span> <span class="hundred word d3">100채</span><span class="word d3">,</span><br>
+        <span class="word d4">아직도</span> <span class="word d5">모자랍니다</span><span class="q word d5">.</span>
       </h1>
-      <div class="sub word d5">吏볦? ?딄퀬 100梨꾨? 留뚮뱺 湲곗쟻 ??'?뚯쑀' ???'怨듭쑀'瑜??앺븳 ?댁쑀</div>
-      <div class="tag word d6"><span class="dot"></span>30珥??덉뿉 ?뺤씤</div>
+      <div class="sub word d5">짓지 않고 100채를 만든 기적 — '소유' 대신 '공유'를 택한 이유</div>
+      <div class="tag word d6"><span class="dot"></span>30초 안에 확인</div>
     </div>
   </section>
 
@@ -277,10 +285,10 @@
       <div class="shape pill"></div>
     </div>
     <div class="center">
-      <div class="kick word d1">WHY WE STARTED 쨌 02</div>
+      <div class="kick word d1">WHY WE STARTED · 02</div>
       <h2 class="mid">
-        <span class="word d2">?뚯쑀媛 ?꾨땶,</span><br>
-        <em class="word d4">怨듭쑀</em><span class="word d5">???뚮옯??/span>
+        <span class="word d2">소유가 아닌,</span><br>
+        <em class="word d4">공유</em><span class="word d5">의 플랫폼</span>
       </h2>
     </div>
   </section>
@@ -291,9 +299,9 @@
       <div class="tag word d1"><span class="dot"></span>CURRENT NETWORK</div>
       <div class="numwrap">
         <span class="num mono" id="ct">0</span>
-        <span class="suffix word d3">梨?/span>
+        <span class="suffix word d3">채</span>
       </div>
-      <div class="kick word d4">援먰쉶쨌?⑥껜媛 ?곌껐???좉탳愿 ?ㅽ듃?뚰겕</div>
+      <div class="kick word d4">교회·단체가 연결된 선교관 네트워크</div>
     </div>
     <div class="ticks" id="ticks"></div>
   </section>
@@ -303,10 +311,10 @@
     <div class="center">
       <div class="card">
         <div class="rail"></div>
-        <div class="meta word d1">CASE 쨌 01 / CHURCH</div>
-        <div class="tag word d1"><span class="dot"></span>?곌껐?щ?</div>
-        <h3 class="sm word d2">??ㅺ탳??/h3>
-        <p class="quote word d3">"?묒? 怨듦컙?댁?留? ?좉탳?ъ쓽 ?쇱씠 ?섏뿀?듬땲??"</p>
+        <div class="meta word d1">CASE · 01 / CHURCH</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">은실교회</h3>
+        <p class="quote word d3">"작은 공간이지만, 선교사의 쉼이 되었습니다."</p>
       </div>
     </div>
   </section>
@@ -316,10 +324,10 @@
     <div class="center">
       <div class="card">
         <div class="rail"></div>
-        <div class="meta word d1">CASE 쨌 02 / ORGANIZATION</div>
-        <div class="tag word d1"><span class="dot"></span>?곌껐?щ?</div>
-        <h3 class="sm word d2">ANN 쨌 源???珥앸Т</h3>
-        <p class="quote word d3">"?쇱옄 ?????녿뜕 ?쇱씠, ?ㅽ듃?뚰겕濡?媛?ν빐議뚯뒿?덈떎."</p>
+        <div class="meta word d1">CASE · 02 / ORGANIZATION</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">ANN · 김은아 총무</h3>
+        <p class="quote word d3">"혼자 할 수 없던 일이, 네트워크로 가능해졌습니다."</p>
       </div>
     </div>
   </section>
@@ -329,10 +337,10 @@
     <div class="center">
       <div class="card">
         <div class="rail"></div>
-        <div class="meta word d1">CASE 쨌 03 / INDIVIDUAL</div>
-        <div class="tag word d1"><span class="dot"></span>?곌껐?щ?</div>
-        <h3 class="sm word d2">?낆씪 쨌 ?꾩삁臾??좉탳??/h3>
-        <p class="quote word d3">"援?꼍 ?덈㉧源뚯?, ?뚮옯?쇱? ?댁뼱議뚯뒿?덈떎."</p>
+        <div class="meta word d1">CASE · 03 / INDIVIDUAL</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">독일 · 전예물 선교사</h3>
+        <p class="quote word d3">"국경 너머까지, 플랫폼은 이어졌습니다."</p>
       </div>
     </div>
   </section>
@@ -342,10 +350,10 @@
     <div class="center">
       <div class="card">
         <div class="rail"></div>
-        <div class="meta word d1">CASE 쨌 04 / CHURCH</div>
-        <div class="tag word d1"><span class="dot"></span>?곌껐?щ?</div>
-        <h3 class="sm word d2">?몄쿇媛醫뚯돹??쨌 議곕챸???щえ</h3>
-        <p class="quote word d3">"湲곕룄濡??대┛ 臾? ?④퍡 吏耳쒖＜?몄슂."</p>
+        <div class="meta word d1">CASE · 04 / CHURCH</div>
+        <div class="tag word d1"><span class="dot"></span>연결사례</div>
+        <h3 class="sm word d2">인천가좌쉼터 · 조명숙 사모</h3>
+        <p class="quote word d3">"기도로 열린 문, 함께 지켜주세요."</p>
       </div>
     </div>
   </section>
@@ -355,35 +363,35 @@
     <div class="center">
       <div class="tag word d1"><span class="dot"></span>THE NETWORK CONTINUES</div>
       <h2 class="mid">
-        <span class="word d2">?ㅼ쓬 ??梨꾩쓽 臾?</span><br>
-        <em class="word d4">?뱀떊???댁뼱二쇱꽭??</em>
+        <span class="word d2">다음 한 채의 문,</span><br>
+        <em class="word d4">당신이 열어주세요.</em>
       </h2>
-      <div class="cta word d6">?④퍡 ?숈갭?섍린 <span class="arrow">??/span></div>
+      <div class="cta word d6">함께 동참하기 <span class="arrow">→</span></div>
     </div>
   </section>
 
   <!-- [BLACK] control dock -->
   <div class="dock" id="dock">
-    <button id="pp" title="?ъ깮/?쇱떆?뺤?">?싢씂</button>
-    <button id="rp" title="泥섏쓬遺??>??/button>
+    <button id="pp" title="재생/일시정지">❚❚</button>
+    <button id="rp" title="처음부터">↺</button>
     <div class="bar" id="bar"><div class="fill" id="fill"></div><div class="chaps" id="chaps"></div></div>
     <div class="time mono"><b id="cur">00.0</b> / 30.0s</div>
-    <button id="mt" title="?뚯냼嫄?>?뵄</button>
+    <button id="mt" title="음소거">🔊</button>
   </div>
 
   <!-- start -->
   <div id="start">
-    <div class="kick">E-LAND ASIAN MISSION 쨌 NEWS VOL.02</div>
-    <h2>?좉탳愿 100梨? ?꾩쭅??紐⑥옄?띾땲??/h2>
-    <button id="go">??30珥??댁뒪 ?쒖옉</button>
-    <div class="meta">SOUND 쨌 VOICE 쨌 30s</div>
+    <div class="kick">E-LAND ASIAN MISSION · NEWS VOL.02</div>
+    <h2>선교관 100채, 아직도 모자랍니다</h2>
+    <button id="go">▶ 30초 뉴스 시작</button>
+    <div class="meta">SOUND · VOICE · 30s</div>
   </div>
 
   <!-- [GOLD] completion -->
   <div id="done">
     <div class="medal">100</div>
-    <div class="msg">?ㅼ쓬 臾몄?, ?뱀떊??李⑤??낅땲??</div>
-    <button class="btn" id="again">?ㅼ떆 蹂닿린</button>
+    <div class="msg">다음 문은, 당신의 차례입니다.</div>
+    <button class="btn" id="again">다시 보기</button>
   </div>
 </div>
 
@@ -439,14 +447,14 @@ function startBGM(){
 }
 
 const lines=[
-  {t:0.4,text:'?좉탳愿 100梨? ?꾩쭅??紐⑥옄?띾땲??'},
-  {t:4.3,text:'?뚯쑀媛 ?꾨땶, 怨듭쑀???뚮옯?쇱엯?덈떎.'},
-  {t:8.3,text:'吏湲덇퉴吏 100梨? ?좉탳愿 ?ㅽ듃?뚰겕媛 ?곌껐?섏뿀?듬땲??'},
-  {t:12.3,text:'??ㅺ탳?? ?묒? 怨듦컙???좉탳?ъ쓽 ?쇱씠 ?섏뿀?듬땲??'},
-  {t:15.8,text:'ANN 源???珥앸Т, ?ㅽ듃?뚰겕濡?媛?ν빐議뚯뒿?덈떎.'},
-  {t:19.3,text:'?낆씪 ?꾩삁臾??좉탳?? 援?꼍 ?덈㉧源뚯? ?댁뼱吏묐땲??'},
-  {t:22.8,text:'?몄쿇媛醫뚯돹?? 湲곕룄濡??대┛ 臾몄엯?덈떎.'},
-  {t:26.3,text:'?ㅼ쓬 ??梨꾩쓽 臾? ?뱀떊???댁뼱二쇱꽭??'}
+  {t:0.4,text:'선교관 100채, 아직도 모자랍니다.'},
+  {t:4.3,text:'소유가 아닌, 공유의 플랫폼입니다.'},
+  {t:8.3,text:'지금까지 100채. 선교관 네트워크가 연결되었습니다.'},
+  {t:12.3,text:'은실교회, 작은 공간이 선교사의 쉼이 되었습니다.'},
+  {t:15.8,text:'ANN 김은아 총무, 네트워크로 가능해졌습니다.'},
+  {t:19.3,text:'독일 전예물 선교사, 국경 너머까지 이어집니다.'},
+  {t:22.8,text:'인천가좌쉼터, 기도로 열린 문입니다.'},
+  {t:26.3,text:'다음 한 채의 문, 당신이 열어주세요.'}
 ];
 function speak(text){
   try{
@@ -504,13 +512,13 @@ function play(){
   paused=false;
   t0=performance.now()-pausedAt*1000;
   raf=requestAnimationFrame(tick);
-  document.getElementById('pp').textContent='?싢씂';
+  document.getElementById('pp').textContent='❚❚';
 }
 function pause(){
   paused=true;
   pausedAt=(performance.now()-t0)/1000;
   cancelAnimationFrame(raf);
-  document.getElementById('pp').textContent='??;
+  document.getElementById('pp').textContent='▶';
 }
 
 document.getElementById('pp').onclick=()=>paused?play():pause();
@@ -524,7 +532,7 @@ document.getElementById('rp').onclick=()=>{
 };
 document.getElementById('mt').onclick=(e)=>{
   muted=!muted;
-  e.currentTarget.textContent=muted?'?뵁':'?뵄';
+  e.currentTarget.textContent=muted?'🔇':'🔊';
   if(masterGain) masterGain.gain.linearRampToValueAtTime(muted?0:0.2,audioCtx.currentTime+0.2);
   if(muted) try{speechSynthesis.cancel()}catch(e){}
 };
@@ -552,4 +560,5 @@ document.getElementById('go').onclick=()=>{
 };
 </script>
 
-</body></html>
+</body>
+</html>
