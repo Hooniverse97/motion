@@ -80,10 +80,10 @@ body{
 .play-sub{font-family:"Noto Sans KR",sans-serif;font-weight:500;font-size:14px;opacity:.75}
 body.playing .play{display:none}
 
-/* Timeline controller (33s total: s0 hook 3s + 6 scenes 30s) */
+/* Timeline controller (35s total — s1 extended to let VO1 finish) */
 .timeline{position:absolute;inset:0;z-index:2;animation:none}
-body.playing .timeline{animation:tick 33s linear forwards}
-@keyframes tick{to{--t:33}}
+body.playing .timeline{animation:tick 35s linear forwards}
+@keyframes tick{to{--t:35}}
 
 /* Progress bar bottom */
 .progress{
@@ -92,7 +92,7 @@ body.playing .timeline{animation:tick 33s linear forwards}
 .progress i{
   display:block;height:100%;width:0;background:var(--red);
 }
-body.playing .progress i{animation:prog 33s linear forwards}
+body.playing .progress i{animation:prog 35s linear forwards}
 @keyframes prog{to{width:100%}}
 
 /* ===== Scene base ===== */
@@ -102,10 +102,10 @@ body.playing .progress i{animation:prog 33s linear forwards}
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   padding:0 28px;text-align:center;
 }
-body.playing .scene{animation-duration:33s;animation-timing-function:linear;animation-iteration-count:1;animation-fill-mode:both}
+body.playing .scene{animation-duration:35s;animation-timing-function:linear;animation-iteration-count:1;animation-fill-mode:both}
 
-/* Scene timings — total 33s
-   s0 0-3s | s1 3-6s | s2 6-11s | s3 11-16s | s4 16-21s | s5 21-26s | s6 26-33s */
+/* Scene timings — total 35s
+   s0 0-3.5s | s1 3.5-9s | s2 9-14s | s3 14-19s | s4 19-24s | s5 24-29s | s6 29-35s */
 body.playing .s0{animation-name:s0}
 body.playing .s1{animation-name:s1}
 body.playing .s2{animation-name:s2}
@@ -114,50 +114,50 @@ body.playing .s4{animation-name:s4}
 body.playing .s5{animation-name:s5}
 body.playing .s6{animation-name:s6}
 
-@keyframes s0{ /* 0-3.5s question hook (thumbnail) */
+@keyframes s0{ /* 0-3.5s thumbnail */
   0%{opacity:1}
-  9%{opacity:1}
-  10.6%{opacity:0}
+  8.5%{opacity:1}
+  10%{opacity:0}
   100%{opacity:0}
 }
-@keyframes s1{ /* 3.5-6s shock reveal (0.5s gap after s0 fade) */
-  0%,10.6%{opacity:0}
-  11.1%{opacity:1}
-  17%{opacity:1}
-  18.2%{opacity:0}
+@keyframes s1{ /* 3.5-9s shock reveal (VO1 fits in 5.5s) */
+  0%,10%{opacity:0}
+  11%{opacity:1}
+  24.5%{opacity:1}
+  25.7%{opacity:0}
   100%{opacity:0}
 }
-@keyframes s2{ /* 6-11s rule1 */
-  0%,17%{opacity:0}
-  18.2%{opacity:1}
-  32.3%{opacity:1}
-  33.3%{opacity:0}
+@keyframes s2{ /* 9-14s rule1 */
+  0%,24.5%{opacity:0}
+  25.7%{opacity:1}
+  38.8%{opacity:1}
+  40%{opacity:0}
   100%{opacity:0}
 }
-@keyframes s3{ /* 11-16s rule2 */
-  0%,32.3%{opacity:0}
-  33.3%{opacity:1}
-  47.5%{opacity:1}
-  48.5%{opacity:0}
+@keyframes s3{ /* 14-19s rule2 */
+  0%,38.8%{opacity:0}
+  40%{opacity:1}
+  53.1%{opacity:1}
+  54.3%{opacity:0}
   100%{opacity:0}
 }
-@keyframes s4{ /* 16-21s rule3 */
-  0%,47.5%{opacity:0}
-  48.5%{opacity:1}
-  62.6%{opacity:1}
-  63.6%{opacity:0}
+@keyframes s4{ /* 19-24s rule3 */
+  0%,53.1%{opacity:0}
+  54.3%{opacity:1}
+  67.4%{opacity:1}
+  68.6%{opacity:0}
   100%{opacity:0}
 }
-@keyframes s5{ /* 21-26s rule4 */
-  0%,62.6%{opacity:0}
-  63.6%{opacity:1}
-  77.8%{opacity:1}
-  78.8%{opacity:0}
+@keyframes s5{ /* 24-29s rule4 */
+  0%,67.4%{opacity:0}
+  68.6%{opacity:1}
+  81.7%{opacity:1}
+  82.9%{opacity:0}
   100%{opacity:0}
 }
-@keyframes s6{ /* 26-33s CTA */
-  0%,77.8%{opacity:0}
-  78.8%{opacity:1}
+@keyframes s6{ /* 29-35s CTA */
+  0%,81.7%{opacity:0}
+  82.9%{opacity:1}
   100%{opacity:1}
 }
 
@@ -203,18 +203,18 @@ body.playing .glitch{animation:glitchShake .12s steps(2) 3.6s 18 both}
 
 /* Brain icon — appears from s1 onward, hidden on s0 (thumbnail) */
 .brain-slot{position:absolute;top:8%;left:0;right:0;display:flex;justify-content:center;z-index:3;pointer-events:none;opacity:0}
-body.playing .brain-slot{animation:brainShow 33s linear forwards}
+body.playing .brain-slot{animation:brainShow 35s linear forwards}
 @keyframes brainShow{
-  0%,10.6%{opacity:0}
-  11.1%{opacity:1}
+  0%,10%{opacity:0}
+  11%{opacity:1}
   100%{opacity:1}
 }
 .brain-slot svg{width:min(140px,22%);height:auto;filter:drop-shadow(0 4px 0 #1a2e4c15)}
 .brain .vein{stroke:var(--red);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-dasharray:60;stroke-dashoffset:60}
-body.playing .brain .v1{animation:veinGrow .5s ease-out 10.5s forwards}
-body.playing .brain .v2{animation:veinGrow .5s ease-out 15.5s forwards}
-body.playing .brain .v3{animation:veinGrow .5s ease-out 20.5s forwards}
-body.playing .brain .v4{animation:veinGrow .5s ease-out 25.5s forwards}
+body.playing .brain .v1{animation:veinGrow .5s ease-out 13s forwards}
+body.playing .brain .v2{animation:veinGrow .5s ease-out 18s forwards}
+body.playing .brain .v3{animation:veinGrow .5s ease-out 23s forwards}
+body.playing .brain .v4{animation:veinGrow .5s ease-out 28s forwards}
 @keyframes veinGrow{to{stroke-dashoffset:0}}
 
 /* Shared rule layout (S2-S5) */
@@ -242,7 +242,7 @@ body.playing .brain .v4{animation:veinGrow .5s ease-out 25.5s forwards}
 .timer .ring{fill:none;stroke:var(--ink-soft);stroke-width:8}
 .timer .fill{fill:none;stroke:var(--red);stroke-width:8;stroke-linecap:round;
   stroke-dasharray:502;stroke-dashoffset:502;transform:rotate(-90deg);transform-origin:center}
-body.playing .s2 .fill{animation:fillRing 4.5s ease-out 6.3s forwards}
+body.playing .s2 .fill{animation:fillRing 4.5s ease-out 9.3s forwards}
 @keyframes fillRing{to{stroke-dashoffset:0}}
 .timer .label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   font-family:"JetBrains Mono",monospace;font-weight:700;font-size:min(8vh,38px);color:var(--ink)}
@@ -251,7 +251,7 @@ body.playing .s2 .fill{animation:fillRing 4.5s ease-out 6.3s forwards}
 .lock{position:relative;width:min(40vh,180px);aspect-ratio:1;display:flex;align-items:center;justify-content:center}
 .lock svg{width:100%;height:100%}
 .shackle{transform-origin:50% 42%;transform-box:fill-box}
-body.playing .s3 .shackle{animation:unlock 1s cubic-bezier(.3,1.6,.6,1) 12s forwards}
+body.playing .s3 .shackle{animation:unlock 1s cubic-bezier(.3,1.6,.6,1) 15s forwards}
 @keyframes unlock{
   0%{transform:rotate(0)}
   60%{transform:rotate(-24deg)}
@@ -264,7 +264,7 @@ body.playing .s3 .shackle{animation:unlock 1s cubic-bezier(.3,1.6,.6,1) 12s forw
   transform:scale(0) rotate(-8deg);transform-origin:bottom left;
   box-shadow:0 3px 0 #1a2e4c;
 }
-body.playing .s3 .hint-bubble{animation:popIn .5s cubic-bezier(.3,1.6,.6,1) 12.6s forwards}
+body.playing .s3 .hint-bubble{animation:popIn .5s cubic-bezier(.3,1.6,.6,1) 15.6s forwards}
 @keyframes popIn{to{transform:scale(1) rotate(-8deg)}}
 
 /* S4 Magnifier catches lie — sized to fit viz slot */
@@ -283,14 +283,14 @@ body.playing .s3 .hint-bubble{animation:popIn .5s cubic-bezier(.3,1.6,.6,1) 12.6
   content:"";position:absolute;left:-4px;right:-4px;top:50%;height:3px;background:var(--red);
   transform:scaleX(0);transform-origin:left center;
 }
-body.playing .s4 .lie-card .lie::after{animation:strike .4s ease-out 18.4s forwards}
+body.playing .s4 .lie-card .lie::after{animation:strike .4s ease-out 21.4s forwards}
 @keyframes strike{to{transform:scaleX(1)}}
 .magnifier{
   position:absolute;width:38%;aspect-ratio:1;z-index:2;pointer-events:none;
   transform:translate(60%,-40%);
 }
 .magnifier svg{width:100%;height:100%}
-body.playing .s4 .magnifier{animation:scan 3s cubic-bezier(.4,0,.6,1) 16.5s forwards}
+body.playing .s4 .magnifier{animation:scan 3s cubic-bezier(.4,0,.6,1) 19.5s forwards}
 @keyframes scan{
   0%{transform:translate(60%,-40%) rotate(-8deg)}
   40%{transform:translate(-50%,20%) rotate(4deg)}
@@ -312,15 +312,15 @@ body.playing .s4 .magnifier{animation:scan 3s cubic-bezier(.4,0,.6,1) 16.5s forw
 .notebook .scrib.l1{top:18%;width:70%}
 .notebook .scrib.l2{top:34%;width:55%}
 .notebook .scrib.l3{top:50%;width:62%}
-body.playing .s5 .scrib.l1{animation:draw .6s ease-out 22s forwards}
-body.playing .s5 .scrib.l2{animation:draw .6s ease-out 22.8s forwards}
-body.playing .s5 .scrib.l3{animation:draw .6s ease-out 23.6s forwards}
+body.playing .s5 .scrib.l1{animation:draw .6s ease-out 25s forwards}
+body.playing .s5 .scrib.l2{animation:draw .6s ease-out 25.8s forwards}
+body.playing .s5 .scrib.l3{animation:draw .6s ease-out 26.6s forwards}
 @keyframes draw{to{transform:scaleX(1)}}
 .pencil{
   position:absolute;width:18%;height:auto;aspect-ratio:1;z-index:3;top:12%;left:8%;
   filter:drop-shadow(1px 2px 0 #0003);
 }
-body.playing .s5 .pencil{animation:penMove 5s linear 21.5s both}
+body.playing .s5 .pencil{animation:penMove 5s linear 24.5s both}
 @keyframes penMove{
   0%{transform:translate(0,0) rotate(-20deg)}
   18%{transform:translate(380%,20%) rotate(-18deg)}
@@ -364,7 +364,7 @@ body.playing .s6 .icons-row .mini:nth-child(4){animation-delay:.6s}
   box-shadow:0 6px 0 var(--ink);
   margin-top:8px;
 }
-body.playing .s6 .cta-btn{animation:bump 2.6s ease-in-out 27.8s 2}
+body.playing .s6 .cta-btn{animation:bump 2.6s ease-in-out 30.3s 2}
 @keyframes bump{
   0%,100%{transform:translateY(0);box-shadow:0 6px 0 var(--ink)}
   50%{transform:translateY(4px);box-shadow:0 2px 0 var(--ink)}
@@ -373,7 +373,7 @@ body.playing .s6 .cta-btn{animation:bump 2.6s ease-in-out 27.8s 2}
   position:absolute;right:-22%;bottom:-24%;width:90px;height:90px;z-index:4;pointer-events:none;
   transform:translate(60%,80%) rotate(-10deg);opacity:0;
 }
-body.playing .s6 .finger{animation:fingerTap 2.6s ease-in-out 27.8s 2 both}
+body.playing .s6 .finger{animation:fingerTap 2.6s ease-in-out 30.3s 2 both}
 @keyframes fingerTap{
   0%{transform:translate(60%,80%) rotate(-10deg);opacity:0}
   25%{transform:translate(0,0) rotate(-10deg);opacity:1}
@@ -388,13 +388,13 @@ body.playing .s6 .finger{animation:fingerTap 2.6s ease-in-out 27.8s 2 both}
 .crt .bar.a{top:12%}
 .crt .bar.b{top:48%;height:6%}
 .crt .bar.c{top:80%;height:9%}
-body.playing .crt{animation:crt 33s linear forwards}
+body.playing .crt{animation:crt 35s linear forwards}
 @keyframes crt{
   0%{opacity:.9}
-  9%{opacity:.9}
-  11%{opacity:0}
-  88%{opacity:0}
-  92%{opacity:.8}
+  8.5%{opacity:.9}
+  10%{opacity:0}
+  82%{opacity:0}
+  85%{opacity:.8}
   100%{opacity:.8}
 }
 body.playing .crt .bar{animation:shift 1.8s linear infinite}
@@ -621,18 +621,18 @@ body.playing .replay{opacity:1;pointer-events:auto}
   <audio id="bgm" preload="auto" src="bgm.mp3"></audio>
   <audio class="vo" data-at="0.3"  preload="auto" src="vo0.mp3"></audio>
   <audio class="vo" data-at="3.7"  preload="auto" src="vo1.mp3"></audio>
-  <audio class="vo" data-at="6.3"  preload="auto" src="vo2.mp3"></audio>
-  <audio class="vo" data-at="11.3" preload="auto" src="vo3.mp3"></audio>
-  <audio class="vo" data-at="16.3" preload="auto" src="vo4.mp3"></audio>
-  <audio class="vo" data-at="21.3" preload="auto" src="vo5.mp3"></audio>
-  <audio class="vo" data-at="26.3" preload="auto" src="vo6.mp3"></audio>
+  <audio class="vo" data-at="9.3"  preload="auto" src="vo2.mp3"></audio>
+  <audio class="vo" data-at="14.3" preload="auto" src="vo3.mp3"></audio>
+  <audio class="vo" data-at="19.3" preload="auto" src="vo4.mp3"></audio>
+  <audio class="vo" data-at="24.3" preload="auto" src="vo5.mp3"></audio>
+  <audio class="vo" data-at="29.3" preload="auto" src="vo6.mp3"></audio>
 
   <!-- Play overlay -->
   <div class="play" id="play">
     <div class="play-inner">
       <div class="play-btn">▶</div>
       <div class="play-label">INK &amp; GLITCH</div>
-      <div class="play-sub">33초 · 세로 9:16 · 탭하여 재생</div>
+      <div class="play-sub">35초 · 세로 9:16 · 탭하여 재생</div>
 
       <div class="audio-dock" onclick="event.stopPropagation()">
         <label class="ready"><span class="tag">🎵 BGM (Suno) · 로드됨</span><span>✓</span></label>
