@@ -114,15 +114,15 @@ body.playing .s4{animation-name:s4}
 body.playing .s5{animation-name:s5}
 body.playing .s6{animation-name:s6}
 
-@keyframes s0{ /* 0-3s question hook (thumbnail) */
+@keyframes s0{ /* 0-3.5s question hook (thumbnail) */
   0%{opacity:1}
-  8%{opacity:1}
-  9.1%{opacity:0}
+  9%{opacity:1}
+  10.6%{opacity:0}
   100%{opacity:0}
 }
-@keyframes s1{ /* 3-6s shock reveal */
-  0%,8%{opacity:0}
-  9.1%{opacity:1}
+@keyframes s1{ /* 3.5-6s shock reveal (0.5s gap after s0 fade) */
+  0%,10.6%{opacity:0}
+  11.1%{opacity:1}
   17%{opacity:1}
   18.2%{opacity:0}
   100%{opacity:0}
@@ -190,7 +190,7 @@ body.playing .s6{animation-name:s6}
 }
 .glitch .line{display:block}
 .glitch .num{color:var(--red)}
-body.playing .glitch{animation:glitchShake .12s steps(2) 3s 18 both}
+body.playing .glitch{animation:glitchShake .12s steps(2) 3.6s 18 both}
 @keyframes glitchShake{
   0%{transform:translate(0,0)}
   25%{transform:translate(-2px,1px)}
@@ -205,8 +205,8 @@ body.playing .glitch{animation:glitchShake .12s steps(2) 3s 18 both}
 .brain-slot{position:absolute;top:8%;left:0;right:0;display:flex;justify-content:center;z-index:3;pointer-events:none;opacity:0}
 body.playing .brain-slot{animation:brainShow 33s linear forwards}
 @keyframes brainShow{
-  0%,8%{opacity:0}
-  9.1%{opacity:1}
+  0%,10.6%{opacity:0}
+  11.1%{opacity:1}
   100%{opacity:1}
 }
 .brain-slot svg{width:min(140px,22%);height:auto;filter:drop-shadow(0 4px 0 #1a2e4c15)}
@@ -620,7 +620,7 @@ body.playing .replay{opacity:1;pointer-events:auto}
   <!-- Hidden audio elements -->
   <audio id="bgm" preload="auto" src="bgm.mp3"></audio>
   <audio class="vo" data-at="0.3"  preload="auto" src="vo0.mp3"></audio>
-  <audio class="vo" data-at="3.1"  preload="auto" src="vo1.mp3"></audio>
+  <audio class="vo" data-at="3.7"  preload="auto" src="vo1.mp3"></audio>
   <audio class="vo" data-at="6.3"  preload="auto" src="vo2.mp3"></audio>
   <audio class="vo" data-at="11.3" preload="auto" src="vo3.mp3"></audio>
   <audio class="vo" data-at="16.3" preload="auto" src="vo4.mp3"></audio>
